@@ -2,7 +2,8 @@ import streams
 
 type Op = enum None, Add, Mul
 
-template doOp(): untyped =
+template doOp(valStmt: untyped): untyped =
+  let val = valStmt
   case cOp:
   of None: result = val
   of Add: result += val
@@ -19,14 +20,10 @@ proc evaluate(x: Stream): int =
   while not x.atEnd:
     let c = x.readChar
     case c:
-    of '0'..'9':
-      let val = ord(c) - ord('0')
-      doOp()
+    of '0'..'9': doOp(ord(c) - ord('0'))
     of '+': cOp = Add
     of '*': cOp = Mul
-    of '(':
-      let val = evaluate(x)
-      doOp()
+    of '(': doOp(evaluate(x))
     of ')': return result * awaitingMul
     else: discard
   result *= awaitingMul
