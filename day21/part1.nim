@@ -35,9 +35,9 @@ var parser = peg "list":
       else:
         allergens[allergen] = ingredientsSet
   ingredients <- >+Lower * *(' ' * >+Lower):
-    parsedIngredients = capture[1..^1].mapIt(it.s)
+    parsedIngredients = capture.capList[1..^1].mapIt(it.s)
   allergens <- "(contains " * >+Lower * *(", " * >+Lower) * ")":
-    parsedAllergens = capture[1..^1].mapIt(it.s)
+    parsedAllergens = capture.capList[1..^1].mapIt(it.s)
 
 if parser.match(data).ok:
   #echo allergens

@@ -20,7 +20,7 @@ let parser = peg "notes":
     myTicket = tickets.pop
   otherTickets <- "nearby tickets:\n" * *(ticket)
   ticket <- *(>+Digit * ",") * >+Digit * "\n":
-    tickets.add capture[1..^1].mapIt(it.s.parseInt.uint16)
+    tickets.add capture.capList[1..^1].mapIt(it.s.parseInt.uint16)
 
 echo parser.matchFile("input.txt")
 
